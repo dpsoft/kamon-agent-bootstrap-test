@@ -36,7 +36,7 @@ public class Advisors {
             return (Callable<Object>) () -> {
                 try {
                     return callable.call();
-                }finally {
+                } finally {
                     extension.incCompletedTasksCounter();
                 }
             };
