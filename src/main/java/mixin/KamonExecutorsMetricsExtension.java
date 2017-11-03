@@ -25,12 +25,12 @@ public class KamonExecutorsMetricsExtension implements ExecutorsMetricsExtension
     }
 
     @Override
-    public long submittedTasks() {
+    public long getAndResetSubmittedTasks() {
         return submittedTasksCounter.getAndSet(0);
     }
 
     @Override
-    public long completedTasksCounter() {
+    public long getAndResetCompletedTasks() {
         return completedTasksCounter.getAndSet(0);
     }
 }
