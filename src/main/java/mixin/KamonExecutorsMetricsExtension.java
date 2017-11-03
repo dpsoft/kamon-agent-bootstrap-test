@@ -4,7 +4,7 @@ import kamon.agent.api.instrumentation.mixin.Initializer;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public class KamonMetricsExtension implements MetricsExtension {
+public class KamonExecutorsMetricsExtension implements ExecutorsMetricsExtension {
     private AtomicLong submittedTasksCounter;
     private AtomicLong completedTasksCounter;
 
@@ -25,12 +25,12 @@ public class KamonMetricsExtension implements MetricsExtension {
     }
 
     @Override
-    public Long extractSubmittedTasks() {
+    public long submittedTasks() {
         return submittedTasksCounter.getAndSet(0);
     }
 
     @Override
-    public Long extractCompletedTasksCounter() {
+    public long completedTasksCounter() {
         return completedTasksCounter.getAndSet(0);
     }
 }
