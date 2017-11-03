@@ -1,10 +1,10 @@
 package mixin;
 
 public interface ExecutorsMetricsExtension {
-    public void incSubmittedTasks();
-    public void incCompletedTasksCounter();
+    void incSubmittedTasks();
+    void incCompletedTasksCounter();
 
-    public long getAndResetSubmittedTasks();
-    public long getAndResetCompletedTasks();
+    long getAndResetSubmittedTasks();
+    long getAndResetCompletedTasks();
 }
 
