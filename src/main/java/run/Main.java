@@ -1,3 +1,5 @@
+package run;
+
 import extractor.MetricsExtractor;
 
 import java.util.concurrent.ExecutorService;
