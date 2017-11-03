@@ -7,7 +7,7 @@ This example shows how we can instrument subclasses of `java.util.concurrent.Exe
 sbt run
 ```
 ## Attach in Runtime
-1 - uncomment in  `Main.java`
+1 - uncomment in  `Main.scala`
 ```text
   AgentLoader.attachAgentToJVM(KamonAgent.class);
 ```
