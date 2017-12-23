@@ -20,8 +20,8 @@ scalaVersion := "2.12.3"
 enablePlugins(JavaAgent)
 
 libraryDependencies ++= Seq(
-  "io.kamon"         %% "kamon-core"                     % "1.0.0-RC1",
-  "io.kamon"         %% "kamon-testkit"                  % "1.0.0-RC1",
+  "io.kamon"         %% "kamon-core"                     % "1.0.0-RC7",
+  "io.kamon"         %% "kamon-testkit"                  % "1.0.0-RC7",
   "io.kamon"         %% "agent-scala-extension"          % "0.0.8-experimental",
   "io.kamon"         % "kamon-agent"                     % "0.0.75-experimental",
   "ch.qos.logback"   % "logback-classic"                 % "1.2.2"
