@@ -2,10 +2,11 @@ package run
 
 import java.util.concurrent.{Callable, ExecutorService, Executors}
 
-import extractor.MetricsExtractor
+import kamon.Kamon
+import kamon.metric.{Counter, CounterMetric, LongAdderCounter}
 
 object Main extends App {
-  // AgentLoader.attachAgentToJVM(KamonAgent.class);
+ //   AgentLoader.attachAgentToJVM(classOf[KamonAgent])
   val executor: ExecutorService = Executors.newWorkStealingPool()
 
   //Submit(Runnable)
@@ -39,8 +40,21 @@ object Main extends App {
   executor.shutdown()
 
   def extractAndPrintMetrics(target: ExecutorService): Unit = {
-    //We need to extract the information by reflection because we can't cast a ForkJoinPool to an ExecutorsMetricsExtension :(
-    val metricsExtractor = MetricsExtractor(target)
-    println(s"Submitted Tasks => ${metricsExtractor.extractSubmittedTasks} Completed Tasks => ${metricsExtractor.extractCompletedTasks}")
+    import Metrics._
+
+    val submittedTasks = Kamon.counter("executor.submitted-task").refine(Map("tpe" -> "fjp")).value()
+    val completedTasks = Kamon.counter("executor.completed-task").refine(Map("tpe" -> "fjp")).value()
+
+    println(s"Submitted Tasks => $submittedTasks Completed Tasks => $completedTasks")
+  }
+}
+
+object Metrics {
+  implicit class CounterMetricSyntax(counter: Counter) {
+    def value(resetState: Boolean = true): Long =
+      counter match {
+        case cm: CounterMetric    => cm.refine(Map.empty[String, String]).value(resetState)
+        case c: LongAdderCounter  => c.snapshot(resetState).value
+      }
   }
 }

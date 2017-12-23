@@ -1,24 +1,27 @@
 package advisor;
 
+import kamon.agent.bootstrap.metrics.MetricsHandler;
 import kamon.agent.libs.net.bytebuddy.asm.Advice;
-import mixin.ExecutorsMetricsExtension;
 
+import java.util.Collections;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
 
 public class Advisors {
     public static class SubmitRunnableParameterWrapper {
+
         @Advice.OnMethodEnter
-        public static void wrapParam(@Advice.This ExecutorsMetricsExtension extension, @Advice.Argument(value = 0, readOnly = false) Runnable runnable) {
-            extension.incSubmittedTasks();
-            runnable = SubmitRunnableParameterWrapper.wrap(runnable, extension);
+        public static void wrapParam(@Advice.This Executor executor, @Advice.Argument(value = 0, readOnly = false) Runnable runnable) {
+            MetricsHandler.incrementCounter("executor.submitted-task", Collections.singletonMap("tpe", "fjp"));
+            runnable = SubmitRunnableParameterWrapper.wrap(runnable, executor);
         }
 
-        public static Runnable wrap(Runnable runnable, ExecutorsMetricsExtension extension) {
+        public static Runnable wrap(Runnable runnable, Executor executor) {
             return () -> {
                 try {
                     runnable.run();
                 } finally {
-                    extension.incCompletedTasksCounter();
+                    MetricsHandler.incrementCounter("executor.completed-task", Collections.singletonMap("tpe", "fjp"));
                 }
             };
         }
@@ -26,18 +29,19 @@ public class Advisors {
 
 
     public static class SubmitCallableParameterWrapper {
+
         @Advice.OnMethodEnter
-        public static void wrapParam(@Advice.This ExecutorsMetricsExtension extension, @Advice.Argument(value = 0, readOnly = false) Callable<?> callable) {
-            extension.incSubmittedTasks();
-            callable = SubmitCallableParameterWrapper.wrap(callable, extension);
+        public static void wrapParam(@Advice.This Executor executor, @Advice.Argument(value = 0, readOnly = false) Callable<?> callable) {
+            MetricsHandler.incrementCounter("executor.submitted-task", Collections.singletonMap("tpe", "fjp"));
+            callable = SubmitCallableParameterWrapper.wrap(callable, executor);
         }
 
-        public static Callable<?> wrap(Callable callable, ExecutorsMetricsExtension extension) {
+        public static Callable<?> wrap(Callable callable, Executor executor) {
             return (Callable<Object>) () -> {
                 try {
                     return callable.call();
                 } finally {
-                    extension.incCompletedTasksCounter();
+                    MetricsHandler.incrementCounter("executor.completed-task", Collections.singletonMap("tpe", "fjp"));
                 }
             };
         }
