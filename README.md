@@ -13,7 +13,7 @@ sbt run
 ```
 2 - comment in `build.sbt`
 ```text
-  javaAgents += "io.kamon"    % "kamon-agent"   % "0.0.9-experimental"  % "compile;test;runtime"
+  javaAgents += "io.kamon"    % "kamon-agent"   % "0.0.[version]-experimental"  % "compile;test;runtime"
 ```
 3 - `sbt run`
 
