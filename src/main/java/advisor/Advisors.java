@@ -1,7 +1,7 @@
 package advisor;
 
-import kamon.agent.bootstrap.metrics.MetricsHandler;
-import kamon.agent.libs.net.bytebuddy.asm.Advice;
+import kanela.agent.bootstrap.metrics.MetricsHandler;
+import kanela.agent.libs.net.bytebuddy.asm.Advice;
 
 import java.util.Collections;
 import java.util.concurrent.Callable;

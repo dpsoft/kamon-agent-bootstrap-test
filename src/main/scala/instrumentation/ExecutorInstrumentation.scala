@@ -1,16 +1,16 @@
 package instrumentation
 
-import java.util
+import java.{lang, util}
 import java.util.concurrent.Callable
 
 import advisor.Advisors
 import kamon.Kamon
-import kamon.agent.bootstrap.metrics.{Metrics, MetricsHandler}
-import kamon.agent.scala.KamonInstrumentation
+import kanela.agent.bootstrap.metrics.{MetricsHandler, MetricsProvider}
+import kanela.agent.scala.KanelaInstrumentation
 
-class ExecutorInstrumentation extends KamonInstrumentation {
+class ExecutorInstrumentation extends KanelaInstrumentation {
 
-  MetricsHandler.setMetricImplementation(new KamonExecutorMetrics)
+  MetricsHandler.setMetricsProvider(new KamonExecutorMetrics)
 
   forSubtypeOf("java.util.concurrent.Executor") { builder =>
     builder
@@ -20,10 +20,36 @@ class ExecutorInstrumentation extends KamonInstrumentation {
   }
 }
 
-final class KamonExecutorMetrics extends Metrics {
+final class KamonExecutorMetrics extends MetricsProvider {
   def incrementCounter(name: String, tags: util.Map[String, String]):Unit = {
     import scala.collection.JavaConverters._
     Kamon.counter(name).refine(tags.asScala.toMap).increment()
   }
+
+  override def incrementCounter(name: String, times: lang.Long, tags: util.Map[String, String]): Unit = ???
+
+  override def incrementGauge(name: String, tags: util.Map[String, String]): Unit = ???
+
+  override def incrementGauge(name: String, times: lang.Long, tags: util.Map[String, String]): Unit = ???
+
+  override def decrementGauge(name: String, tags: util.Map[String, String]): Unit = ???
+
+  override def decrementGauge(name: String, times: lang.Long, tags: util.Map[String, String]): Unit = ???
+
+  override def setGauge(name: String, value: lang.Long): Unit = ???
+
+  override def recordHistogram(name: String, tags: util.Map[String, String]): Unit = ???
+
+  override def recordHistogram(name: String, times: lang.Long, tags: util.Map[String, String]): Unit = ???
+
+  override def incrementRangeSampler(name: String, tags: util.Map[String, String]): Unit = ???
+
+  override def incrementRangeSampler(name: String, times: lang.Long, tags: util.Map[String, String]): Unit = ???
+
+  override def decrementRangeSampler(name: String, tags: util.Map[String, String]): Unit = ???
+
+  override def decrementRangeSampler(name: String, times: lang.Long, tags: util.Map[String, String]): Unit = ???
+
+  override def sampleRangeSampler(): Unit = ???
 }
 

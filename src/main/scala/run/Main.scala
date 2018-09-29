@@ -3,10 +3,14 @@ package run
 import java.util.concurrent.{Callable, ExecutorService, Executors}
 
 import kamon.Kamon
+import kamon.attach.AgentLoader
 import kamon.metric.{Counter, CounterMetric, LongAdderCounter}
+//import kanela.agent.Kanela
+import kanela.agent.attacher.Kanela
 
 object Main extends App {
- //   AgentLoader.attachAgentToJVM(classOf[KamonAgent])
+//  AgentLoader.attachAgentToJVM(classOf[Kanela])
+  Kanela.attach()
   val executor: ExecutorService = Executors.newWorkStealingPool()
 
   //Submit(Runnable)
